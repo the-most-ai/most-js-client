@@ -1,0 +1,261 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "paths": {
+    "/api/content/{path}": {
+      "get": {
+        "operationId": "send_content_api_content__path__get",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/api/ajax_content/{path}": {
+      "post": {
+        "operationId": "send_content_api_ajax_content__path__post",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/api/process/{path}": {
+      "post": {
+        "operationId": "process_content_api_process__path__post",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/api/external/access_token": {
+      "post": {
+        "operationId": "access_token_api_external_access_token_post",
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          },
+          "required": true
+        },
+        "responses": {}
+      }
+    },
+    "/api/external/list_models": {
+      "get": {
+        "operationId": "list_models_api_external_list_models_get",
+        "responses": {}
+      }
+    },
+    "/api/external/{client_id}/upload": {
+      "post": {
+        "operationId": "upload_audio_api_external__client_id__upload_post",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {}
+          }
+        },
+        "responses": {}
+      }
+    },
+    "/api/external/{client_id}/list": {
+      "get": {
+        "operationId": "list_audios_api_external__client_id__list_get",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/api/external/{client_id}/audio/{audio_id}/model/{model_id}/apply": {
+      "post": {
+        "operationId": "apply_model_api_external__client_id__audio__audio_id__model__model_id__apply_post",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "audio_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "model_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/api/external/{client_id}/audio/{audio_id}/model/{model_id}/apply_async": {
+      "post": {
+        "operationId": "apply_model_later_api_external__client_id__audio__audio_id__model__model_id__apply_async_post",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "audio_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "model_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/api/external/{client_id}/audio/{audio_id}/model/{model_id}/results": {
+      "get": {
+        "operationId": "retrieve_results_api_external__client_id__audio__audio_id__model__model_id__results_get",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "audio_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "model_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/api/external/{client_id}/audio/{audio_id}/model/{model_id}/text": {
+      "get": {
+        "operationId": "retrieve_text_api_external__client_id__audio__audio_id__model__model_id__text_get",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "audio_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "model_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/asyncapi": {
+      "get": {
+        "operationId": "serve_asyncapi_schema_asyncapi_get",
+        "parameters": [
+          {
+            "name": "sidebar",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "info",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "servers",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "operations",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "messages",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "schemas",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "errors",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "expandMessageExamples",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/asyncapi.json": {
+      "get": {
+        "operationId": "download_app_json_schema_asyncapi_json_get",
+        "responses": {}
+      }
+    },
+    "/asyncapi.yaml": {
+      "get": {
+        "operationId": "download_app_yaml_schema_asyncapi_yaml_get",
+        "responses": {}
+      }
+    }
+  },
+  "components": {}
+}
