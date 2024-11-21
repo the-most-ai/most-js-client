@@ -1,8 +1,11 @@
 import { createMostAIClient } from 'most-js-client'
 
 const client = await createMostAIClient({
-  username: 'gkasparyants@gmail.com',
-  password: 'Qw123456',
+  clientId: '673605332b00397096f1aa73',
+  clientSecret: 'pTRG6D1HCAHAmJOScq6Vsg$xrVS6ycG58P4yTBfRrdtwCVrQVbo/bb1vZcEYoRpMJ4',
 })
 
-console.log('client', await client.list_models_api_external_list_models_get())
+console.log('client', await client.listModels())
+
+console.log('client', await client.listAudios())
+

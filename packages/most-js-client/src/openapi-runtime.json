@@ -46,7 +46,7 @@
     },
     "/api/external/access_token": {
       "post": {
-        "operationId": "access_token_api_external_access_token_post",
+        "operationId": "auth",
         "requestBody": {
           "content": {
             "application/json": {}
@@ -58,13 +58,13 @@
     },
     "/api/external/list_models": {
       "get": {
-        "operationId": "list_models_api_external_list_models_get",
+        "operationId": "list_models",
         "responses": {}
       }
     },
     "/api/external/{client_id}/upload": {
       "post": {
-        "operationId": "upload_audio_api_external__client_id__upload_post",
+        "operationId": "upload_audio",
         "parameters": [
           {
             "name": "client_id",
@@ -83,7 +83,7 @@
     },
     "/api/external/{client_id}/list": {
       "get": {
-        "operationId": "list_audios_api_external__client_id__list_get",
+        "operationId": "list_audios",
         "parameters": [
           {
             "name": "client_id",
@@ -106,7 +106,7 @@
     },
     "/api/external/{client_id}/audio/{audio_id}/model/{model_id}/apply": {
       "post": {
-        "operationId": "apply_model_api_external__client_id__audio__audio_id__model__model_id__apply_post",
+        "operationId": "apply",
         "parameters": [
           {
             "name": "client_id",
@@ -129,7 +129,7 @@
     },
     "/api/external/{client_id}/audio/{audio_id}/model/{model_id}/apply_async": {
       "post": {
-        "operationId": "apply_model_later_api_external__client_id__audio__audio_id__model__model_id__apply_async_post",
+        "operationId": "apply_async",
         "parameters": [
           {
             "name": "client_id",
@@ -152,7 +152,7 @@
     },
     "/api/external/{client_id}/audio/{audio_id}/model/{model_id}/results": {
       "get": {
-        "operationId": "retrieve_results_api_external__client_id__audio__audio_id__model__model_id__results_get",
+        "operationId": "fetch_results",
         "parameters": [
           {
             "name": "client_id",
@@ -175,7 +175,7 @@
     },
     "/api/external/{client_id}/audio/{audio_id}/model/{model_id}/text": {
       "get": {
-        "operationId": "retrieve_text_api_external__client_id__audio__audio_id__model__model_id__text_get",
+        "operationId": "fetch_text",
         "parameters": [
           {
             "name": "client_id",

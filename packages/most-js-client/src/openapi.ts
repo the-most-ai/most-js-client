@@ -56,9 +56,9 @@ declare namespace Components {
             client_secret: string;
         }
         /**
-         * Body_upload_audio_api_external__client_id__upload_post
+         * Body_upload_audio
          */
-        export interface BodyUploadAudioApiExternalClientIdUploadPost {
+        export interface BodyUploadAudio {
             /**
              * Audio File
              */
@@ -123,14 +123,7 @@ declare namespace Components {
     }
 }
 declare namespace Paths {
-    namespace AccessTokenApiExternalAccessTokenPost {
-        export type RequestBody = /* AuthCredentials */ Components.Schemas.AuthCredentials;
-        namespace Responses {
-            export type $200 = any;
-            export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
-        }
-    }
-    namespace ApplyModelApiExternalClientIdAudioAudioIdModelModelIdApplyPost {
+    namespace Apply {
         namespace Parameters {
             /**
              * Audio Id
@@ -155,7 +148,7 @@ declare namespace Paths {
             export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
         }
     }
-    namespace ApplyModelLaterApiExternalClientIdAudioAudioIdModelModelIdApplyAsyncPost {
+    namespace ApplyAsync {
         namespace Parameters {
             /**
              * Audio Id
@@ -180,6 +173,13 @@ declare namespace Paths {
             export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
         }
     }
+    namespace Auth {
+        export type RequestBody = /* AuthCredentials */ Components.Schemas.AuthCredentials;
+        namespace Responses {
+            export type $200 = any;
+            export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
+        }
+    }
     namespace DownloadAppJsonSchemaAsyncapiJsonGet {
         namespace Responses {
             export type $200 = any;
@@ -190,7 +190,57 @@ declare namespace Paths {
             export type $200 = any;
         }
     }
-    namespace ListAudiosApiExternalClientIdListGet {
+    namespace FetchResults {
+        namespace Parameters {
+            /**
+             * Audio Id
+             */
+            export type AudioId = string;
+            /**
+             * Client Id
+             */
+            export type ClientId = string;
+            /**
+             * Model Id
+             */
+            export type ModelId = string;
+        }
+        export interface PathParameters {
+            client_id: /* Client Id */ Parameters.ClientId;
+            audio_id: /* Audio Id */ Parameters.AudioId;
+            model_id: /* Model Id */ Parameters.ModelId;
+        }
+        namespace Responses {
+            export type $200 = /* AudioResult */ Components.Schemas.AudioResult;
+            export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
+        }
+    }
+    namespace FetchText {
+        namespace Parameters {
+            /**
+             * Audio Id
+             */
+            export type AudioId = string;
+            /**
+             * Client Id
+             */
+            export type ClientId = string;
+            /**
+             * Model Id
+             */
+            export type ModelId = string;
+        }
+        export interface PathParameters {
+            client_id: /* Client Id */ Parameters.ClientId;
+            audio_id: /* Audio Id */ Parameters.AudioId;
+            model_id: /* Model Id */ Parameters.ModelId;
+        }
+        namespace Responses {
+            export type $200 = /* AudioResult */ Components.Schemas.AudioResult;
+            export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
+        }
+    }
+    namespace ListAudios {
         namespace Parameters {
             /**
              * Client Id
@@ -214,13 +264,13 @@ declare namespace Paths {
         }
         namespace Responses {
             /**
-             * Response List Audios Api External  Client Id  List Get
+             * Response List Audios
              */
             export type $200 = /* AudioUpload */ Components.Schemas.AudioUpload[];
             export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
         }
     }
-    namespace ListModelsApiExternalListModelsGet {
+    namespace ListModels {
         namespace Responses {
             export type $200 = any;
         }
@@ -237,56 +287,6 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $200 = any;
-            export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
-        }
-    }
-    namespace RetrieveResultsApiExternalClientIdAudioAudioIdModelModelIdResultsGet {
-        namespace Parameters {
-            /**
-             * Audio Id
-             */
-            export type AudioId = string;
-            /**
-             * Client Id
-             */
-            export type ClientId = string;
-            /**
-             * Model Id
-             */
-            export type ModelId = string;
-        }
-        export interface PathParameters {
-            client_id: /* Client Id */ Parameters.ClientId;
-            audio_id: /* Audio Id */ Parameters.AudioId;
-            model_id: /* Model Id */ Parameters.ModelId;
-        }
-        namespace Responses {
-            export type $200 = /* AudioResult */ Components.Schemas.AudioResult;
-            export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
-        }
-    }
-    namespace RetrieveTextApiExternalClientIdAudioAudioIdModelModelIdTextGet {
-        namespace Parameters {
-            /**
-             * Audio Id
-             */
-            export type AudioId = string;
-            /**
-             * Client Id
-             */
-            export type ClientId = string;
-            /**
-             * Model Id
-             */
-            export type ModelId = string;
-        }
-        export interface PathParameters {
-            client_id: /* Client Id */ Parameters.ClientId;
-            audio_id: /* Audio Id */ Parameters.AudioId;
-            model_id: /* Model Id */ Parameters.ModelId;
-        }
-        namespace Responses {
-            export type $200 = /* AudioResult */ Components.Schemas.AudioResult;
             export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
         }
     }
@@ -370,7 +370,7 @@ declare namespace Paths {
             export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
         }
     }
-    namespace UploadAudioApiExternalClientIdUploadPost {
+    namespace UploadAudio {
         namespace Parameters {
             /**
              * Client Id
@@ -380,7 +380,7 @@ declare namespace Paths {
         export interface PathParameters {
             client_id: /* Client Id */ Parameters.ClientId;
         }
-        export type RequestBody = /* Body_upload_audio_api_external__client_id__upload_post */ Components.Schemas.BodyUploadAudioApiExternalClientIdUploadPost;
+        export type RequestBody = /* Body_upload_audio */ Components.Schemas.BodyUploadAudio;
         namespace Responses {
             export type $200 = /* AudioUpload */ Components.Schemas.AudioUpload;
             export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
@@ -414,85 +414,85 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ProcessContentApiProcessPathPost.Responses.$200>
   /**
-   * access_token_api_external_access_token_post - Get access token
+   * auth - Get access token
    * 
    * Get access token from clientId and clientSecret
    */
-  'access_token_api_external_access_token_post'(
+  'auth'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.AccessTokenApiExternalAccessTokenPost.RequestBody,
+    data?: Paths.Auth.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AccessTokenApiExternalAccessTokenPost.Responses.$200>
+  ): OperationResponse<Paths.Auth.Responses.$200>
   /**
-   * list_models_api_external_list_models_get - List trained models for user
+   * list_models - List trained models for user
    * 
    * List all available trained models
    */
-  'list_models_api_external_list_models_get'(
+  'list_models'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListModelsApiExternalListModelsGet.Responses.$200>
+  ): OperationResponse<Paths.ListModels.Responses.$200>
   /**
-   * upload_audio_api_external__client_id__upload_post - Upload an audio
+   * upload_audio - Upload an audio
    * 
    * Uploads audio and returns ID
    */
-  'upload_audio_api_external__client_id__upload_post'(
-    parameters?: Parameters<Paths.UploadAudioApiExternalClientIdUploadPost.PathParameters> | null,
-    data?: Paths.UploadAudioApiExternalClientIdUploadPost.RequestBody,
+  'upload_audio'(
+    parameters?: Parameters<Paths.UploadAudio.PathParameters> | null,
+    data?: Paths.UploadAudio.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UploadAudioApiExternalClientIdUploadPost.Responses.$200>
+  ): OperationResponse<Paths.UploadAudio.Responses.$200>
   /**
-   * list_audios_api_external__client_id__list_get - List audio files
+   * list_audios - List audio files
    * 
    * List all audio files in bucket
    */
-  'list_audios_api_external__client_id__list_get'(
-    parameters?: Parameters<Paths.ListAudiosApiExternalClientIdListGet.QueryParameters & Paths.ListAudiosApiExternalClientIdListGet.PathParameters> | null,
+  'list_audios'(
+    parameters?: Parameters<Paths.ListAudios.QueryParameters & Paths.ListAudios.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListAudiosApiExternalClientIdListGet.Responses.$200>
+  ): OperationResponse<Paths.ListAudios.Responses.$200>
   /**
-   * apply_model_api_external__client_id__audio__audio_id__model__model_id__apply_post - Apply model to audio and get results instantly
+   * apply - Apply model to audio and get results instantly
    * 
    * Apply model to audio and get results instantly
    */
-  'apply_model_api_external__client_id__audio__audio_id__model__model_id__apply_post'(
-    parameters?: Parameters<Paths.ApplyModelApiExternalClientIdAudioAudioIdModelModelIdApplyPost.PathParameters> | null,
+  'apply'(
+    parameters?: Parameters<Paths.Apply.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ApplyModelApiExternalClientIdAudioAudioIdModelModelIdApplyPost.Responses.$200>
+  ): OperationResponse<Paths.Apply.Responses.$200>
   /**
-   * apply_model_later_api_external__client_id__audio__audio_id__model__model_id__apply_async_post - Apply model to audio and get results later
+   * apply_async - Apply model to audio and get results later
    * 
    * Apply model to audio and get results later, we can notify you, when results will be available
    */
-  'apply_model_later_api_external__client_id__audio__audio_id__model__model_id__apply_async_post'(
-    parameters?: Parameters<Paths.ApplyModelLaterApiExternalClientIdAudioAudioIdModelModelIdApplyAsyncPost.PathParameters> | null,
+  'apply_async'(
+    parameters?: Parameters<Paths.ApplyAsync.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ApplyModelLaterApiExternalClientIdAudioAudioIdModelModelIdApplyAsyncPost.Responses.$200>
+  ): OperationResponse<Paths.ApplyAsync.Responses.$200>
   /**
-   * retrieve_results_api_external__client_id__audio__audio_id__model__model_id__results_get - Get results of check list of audio from model if available
+   * fetch_results - Get results of check list of audio from model if available
    * 
    * Get results of check list of audio from model if available
    */
-  'retrieve_results_api_external__client_id__audio__audio_id__model__model_id__results_get'(
-    parameters?: Parameters<Paths.RetrieveResultsApiExternalClientIdAudioAudioIdModelModelIdResultsGet.PathParameters> | null,
+  'fetch_results'(
+    parameters?: Parameters<Paths.FetchResults.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.RetrieveResultsApiExternalClientIdAudioAudioIdModelModelIdResultsGet.Responses.$200>
+  ): OperationResponse<Paths.FetchResults.Responses.$200>
   /**
-   * retrieve_text_api_external__client_id__audio__audio_id__model__model_id__text_get - Get transcribed text of audio from Model if available
+   * fetch_text - Get transcribed text of audio from Model if available
    * 
    * Get transcribed text of audio from Model if available
    */
-  'retrieve_text_api_external__client_id__audio__audio_id__model__model_id__text_get'(
-    parameters?: Parameters<Paths.RetrieveTextApiExternalClientIdAudioAudioIdModelModelIdTextGet.PathParameters> | null,
+  'fetch_text'(
+    parameters?: Parameters<Paths.FetchText.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.RetrieveTextApiExternalClientIdAudioAudioIdModelModelIdTextGet.Responses.$200>
+  ): OperationResponse<Paths.FetchText.Responses.$200>
   /**
    * serve_asyncapi_schema_asyncapi_get - Serve Asyncapi Schema
    * 
@@ -554,19 +554,19 @@ export interface PathsDictionary {
   }
   ['/api/external/access_token']: {
     /**
-     * access_token_api_external_access_token_post - Get access token
+     * auth - Get access token
      * 
      * Get access token from clientId and clientSecret
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.AccessTokenApiExternalAccessTokenPost.RequestBody,
+      data?: Paths.Auth.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AccessTokenApiExternalAccessTokenPost.Responses.$200>
+    ): OperationResponse<Paths.Auth.Responses.$200>
   }
   ['/api/external/list_models']: {
     /**
-     * list_models_api_external_list_models_get - List trained models for user
+     * list_models - List trained models for user
      * 
      * List all available trained models
      */
@@ -574,79 +574,79 @@ export interface PathsDictionary {
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListModelsApiExternalListModelsGet.Responses.$200>
+    ): OperationResponse<Paths.ListModels.Responses.$200>
   }
   ['/api/external/{client_id}/upload']: {
     /**
-     * upload_audio_api_external__client_id__upload_post - Upload an audio
+     * upload_audio - Upload an audio
      * 
      * Uploads audio and returns ID
      */
     'post'(
-      parameters?: Parameters<Paths.UploadAudioApiExternalClientIdUploadPost.PathParameters> | null,
-      data?: Paths.UploadAudioApiExternalClientIdUploadPost.RequestBody,
+      parameters?: Parameters<Paths.UploadAudio.PathParameters> | null,
+      data?: Paths.UploadAudio.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UploadAudioApiExternalClientIdUploadPost.Responses.$200>
+    ): OperationResponse<Paths.UploadAudio.Responses.$200>
   }
   ['/api/external/{client_id}/list']: {
     /**
-     * list_audios_api_external__client_id__list_get - List audio files
+     * list_audios - List audio files
      * 
      * List all audio files in bucket
      */
     'get'(
-      parameters?: Parameters<Paths.ListAudiosApiExternalClientIdListGet.QueryParameters & Paths.ListAudiosApiExternalClientIdListGet.PathParameters> | null,
+      parameters?: Parameters<Paths.ListAudios.QueryParameters & Paths.ListAudios.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListAudiosApiExternalClientIdListGet.Responses.$200>
+    ): OperationResponse<Paths.ListAudios.Responses.$200>
   }
   ['/api/external/{client_id}/audio/{audio_id}/model/{model_id}/apply']: {
     /**
-     * apply_model_api_external__client_id__audio__audio_id__model__model_id__apply_post - Apply model to audio and get results instantly
+     * apply - Apply model to audio and get results instantly
      * 
      * Apply model to audio and get results instantly
      */
     'post'(
-      parameters?: Parameters<Paths.ApplyModelApiExternalClientIdAudioAudioIdModelModelIdApplyPost.PathParameters> | null,
+      parameters?: Parameters<Paths.Apply.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ApplyModelApiExternalClientIdAudioAudioIdModelModelIdApplyPost.Responses.$200>
+    ): OperationResponse<Paths.Apply.Responses.$200>
   }
   ['/api/external/{client_id}/audio/{audio_id}/model/{model_id}/apply_async']: {
     /**
-     * apply_model_later_api_external__client_id__audio__audio_id__model__model_id__apply_async_post - Apply model to audio and get results later
+     * apply_async - Apply model to audio and get results later
      * 
      * Apply model to audio and get results later, we can notify you, when results will be available
      */
     'post'(
-      parameters?: Parameters<Paths.ApplyModelLaterApiExternalClientIdAudioAudioIdModelModelIdApplyAsyncPost.PathParameters> | null,
+      parameters?: Parameters<Paths.ApplyAsync.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ApplyModelLaterApiExternalClientIdAudioAudioIdModelModelIdApplyAsyncPost.Responses.$200>
+    ): OperationResponse<Paths.ApplyAsync.Responses.$200>
   }
   ['/api/external/{client_id}/audio/{audio_id}/model/{model_id}/results']: {
     /**
-     * retrieve_results_api_external__client_id__audio__audio_id__model__model_id__results_get - Get results of check list of audio from model if available
+     * fetch_results - Get results of check list of audio from model if available
      * 
      * Get results of check list of audio from model if available
      */
     'get'(
-      parameters?: Parameters<Paths.RetrieveResultsApiExternalClientIdAudioAudioIdModelModelIdResultsGet.PathParameters> | null,
+      parameters?: Parameters<Paths.FetchResults.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.RetrieveResultsApiExternalClientIdAudioAudioIdModelModelIdResultsGet.Responses.$200>
+    ): OperationResponse<Paths.FetchResults.Responses.$200>
   }
   ['/api/external/{client_id}/audio/{audio_id}/model/{model_id}/text']: {
     /**
-     * retrieve_text_api_external__client_id__audio__audio_id__model__model_id__text_get - Get transcribed text of audio from Model if available
+     * fetch_text - Get transcribed text of audio from Model if available
      * 
      * Get transcribed text of audio from Model if available
      */
     'get'(
-      parameters?: Parameters<Paths.RetrieveTextApiExternalClientIdAudioAudioIdModelModelIdTextGet.PathParameters> | null,
+      parameters?: Parameters<Paths.FetchText.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.RetrieveTextApiExternalClientIdAudioAudioIdModelModelIdTextGet.Responses.$200>
+    ): OperationResponse<Paths.FetchText.Responses.$200>
   }
   ['/asyncapi']: {
     /**
@@ -687,7 +687,7 @@ export type Client = OpenAPIClient<OperationMethods, PathsDictionary>
 export type AudioResult = Components.Schemas.AudioResult;
 export type AudioUpload = Components.Schemas.AudioUpload;
 export type AuthCredentials = Components.Schemas.AuthCredentials;
-export type Body_upload_audio_api_external__client_id__upload_post = Components.Schemas.BodyUploadAudioApiExternalClientIdUploadPost;
+export type Body_upload_audio = Components.Schemas.BodyUploadAudio;
 export type ColumnResult = Components.Schemas.ColumnResult;
 export type HTTPValidationError = Components.Schemas.HTTPValidationError;
 export type SubcolumnResult = Components.Schemas.SubcolumnResult;
