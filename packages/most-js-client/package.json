@@ -9,14 +9,15 @@
   ],
   "scripts": {
     "build": "rm -rf dist && tsc",
-    "dev": "tsc --watch",
-    "prepublish": "npm run build"
+    "generate-runtime": "bunx openapicmd read --strip openapi_client_axios --format json openapi.json > src/openapi-runtime.json",
+    "generate-types": "bunx openapicmd typegen ./openapi.json > src/openapi.ts",
+    "dev": "tsc --watch"
   },
   "dependencies": {
-    "axios": "^1.7.7",
     "openapi-client-axios": "^7.5.5"
   },
   "devDependencies": {
+    "openapicmd": "^2.6.1",
     "typescript": "^5.6.3"
   }
 }

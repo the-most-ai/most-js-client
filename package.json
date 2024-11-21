@@ -4,5 +4,11 @@
   "workspaces": [
     "packages/*",
     "playground/*"
-  ]
+  ],
+  "devDependencies": {
+    "@types/bun": "^1.1.13"
+  },
+  "scripts": {
+    "dev": "bun dev.ts"
+  }
 }

@@ -4,55 +4,46 @@ import type { Client as OpenApiClient } from './openapi.ts'
 
 const BASE_URL = 'https://api.the-most.ai'
 
-interface CreateMostAIClientOptions {
-  clientId: string
-  clientSecret: string
+interface MostAiClientOptions {
   modelId?: string
   apiUrl?: string
 }
 
 class MostAiClient {
-  private clientId: string
-  private clientSecret: string
   private modelId?: string
-  private accessToken?: string
   private apiUrl?: string
-  public client?: OpenApiClient
+  private accessToken?: string
 
-  constructor(options: CreateMostAIClientOptions) {
-    this.clientId = options.clientId
-    this.clientSecret = options.clientSecret
+  public client: OpenApiClient
+
+  constructor(options: MostAiClientOptions) {
     this.modelId = options.modelId
     this.apiUrl = options.apiUrl || BASE_URL
-  }
 
-  async init() {
-    const openapiClient = new OpenAPIClientAxios({
+    this.client = new OpenAPIClientAxios({
       definition: openapiRuntime,
       axiosConfigDefaults: {
         baseURL: this.apiUrl,
       },
-    })
+    }).initSync<OpenApiClient>()
+  }
 
-    const client = await openapiClient.init<OpenApiClient>()
-    const { data: accessToken } = await client.auth(
+  async authenticate(clientId: string, clientSecret: string) {
+    const { data: accessToken } = await this.client.auth(
       {},
       {
-        client_id: this.clientId,
-        client_secret: this.clientSecret,
+        client_id: clientId,
+        client_secret: clientSecret,
       },
     )
-    client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-    this.client = client
     this.accessToken = accessToken
+    this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
 
     return this.client
   }
 
   clone(): MostAiClient {
     const copyMostClient = new MostAiClient({
-      clientId: this.clientId,
-      clientSecret: this.clientSecret,
       modelId: this.modelId,
     })
     copyMostClient.client = this.client
@@ -61,11 +52,7 @@ class MostAiClient {
   }
 
   withModel(modelId: string): MostAiClient {
-    const copyMostClient = new MostAiClient({
-      clientId: this.clientId,
-      clientSecret: this.clientSecret,
-      modelId: modelId,
-    })
+    const copyMostClient = new MostAiClient({ modelId })
     copyMostClient.client = this.client
     copyMostClient.accessToken = this.accessToken
     return copyMostClient
@@ -90,6 +77,13 @@ class MostAiClient {
   // }
 }
 
+interface CreateMostAIClientOptions {
+  clientId: string
+  clientSecret: string
+  modelId?: string
+  apiUrl?: string
+}
+
 export async function createMostAIClient({
   clientId,
   clientSecret,
@@ -97,12 +91,10 @@ export async function createMostAIClient({
   apiUrl,
 }: CreateMostAIClientOptions) {
   const mostAi = new MostAiClient({
-    clientId,
-    clientSecret,
     modelId,
     apiUrl,
   })
-  await mostAi.init()
+  await mostAi.authenticate(clientId, clientSecret)
   if (!mostAi.client) {
     throw new Error('Error in client initialization')
   }
