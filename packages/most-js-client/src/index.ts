@@ -1,6 +1,6 @@
 import OpenAPIClientAxios from 'openapi-client-axios'
 import openapiRuntime from './openapi-runtime.json'
-import type { Client as MostJsClient, AudioUpload, AudioResult } from './openapi.ts'
+import type { Client as OpenApiClient } from './openapi.ts'
 
 const BASE_URL = 'https://api.the-most.ai'
 
@@ -8,67 +8,49 @@ interface CreateMostAIClientOptions {
   clientId: string
   clientSecret: string
   modelId?: string
+  apiUrl?: string
 }
 
-
-class MostClient {
+class MostAiClient {
   private clientId: string
   private clientSecret: string
   private modelId?: string
   private accessToken?: string
-
-  private client?: MostJsClient
+  private apiUrl?: string
+  public client?: OpenApiClient
 
   constructor(options: CreateMostAIClientOptions) {
     this.clientId = options.clientId
     this.clientSecret = options.clientSecret
     this.modelId = options.modelId
+    this.apiUrl = options.apiUrl || BASE_URL
   }
 
   async init() {
     const openapiClient = new OpenAPIClientAxios({
       definition: openapiRuntime,
       axiosConfigDefaults: {
-        baseURL: BASE_URL
+        baseURL: this.apiUrl,
       },
     })
 
-    const client = await openapiClient.init<MostJsClient>()
-    const accessToken = (await client.auth({}, {
-      client_id: this.clientId,
-      client_secret: this.clientSecret,
-    })).data
-
+    const client = await openapiClient.init<OpenApiClient>()
+    const { data: accessToken } = await client.auth(
+      {},
+      {
+        client_id: this.clientId,
+        client_secret: this.clientSecret,
+      },
+    )
+    client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
     this.client = client
     this.accessToken = accessToken
+
+    return this.client
   }
 
-  async listModels() {
-    if (!this.client) {
-      throw new Error('Client is not initialized')
-    }
-    return (await this.client.list_models({}, {}, {
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`
-      }
-    })).data
-  }
-
-  async listAudios(): Promise<AudioUpload[]> {
-    if (!this.client) {
-      throw new Error('Client is not initialized')
-    }
-    return (await this.client.list_audios({
-      client_id: this.clientId,
-    }, {}, {
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`
-      }
-    })).data
-  }
-
-  clone(): MostClient {
-    const copyMostClient = new MostClient({
+  clone(): MostAiClient {
+    const copyMostClient = new MostAiClient({
       clientId: this.clientId,
       clientSecret: this.clientSecret,
       modelId: this.modelId,
@@ -78,8 +60,8 @@ class MostClient {
     return copyMostClient
   }
 
-  withModel(modelId: string): MostClient {
-    const copyMostClient = new MostClient({
+  withModel(modelId: string): MostAiClient {
+    const copyMostClient = new MostAiClient({
       clientId: this.clientId,
       clientSecret: this.clientSecret,
       modelId: modelId,
@@ -89,36 +71,40 @@ class MostClient {
     return copyMostClient
   }
 
-  async uploadAudio(f: File): Promise<AudioUpload> {
-    if (!this.client) {
-      throw new Error('Client is not initialized')
-    }
-    return (await this.client.upload_audio({
-      client_id: this.clientId,
-    }, {
-      audio_file: await f.arrayBuffer().then((buf) => {
-        const arr = new Uint16Array(buf)
-        return String.fromCharCode.apply(null, [...arr])
-      }),
-    }, {
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`
-      }
-    })).data
-  }
+  // async uploadAudio(file: File): Promise<AudioUpload> {
+  //   if (!this.client) {
+  //     throw new Error('Client is not initialized')
+  //   }
+  //   const { data } = await this.client.upload_audio(
+  //     {
+  //       client_id: this.clientId,
+  //     },
+  //     {
+  //       audio_file: await file.arrayBuffer().then((buffer) => {
+  //         const array = new Uint16Array(buffer)
+  //         return array.map(String.fromCharCode) //String.fromCharCode.apply(null, [...array])
+  //       }),
+  //     },
+  //   )
+  //   return data
+  // }
 }
 
 export async function createMostAIClient({
   clientId,
   clientSecret,
   modelId,
+  apiUrl,
 }: CreateMostAIClientOptions) {
-  const client = new MostClient({
+  const mostAi = new MostAiClient({
     clientId,
     clientSecret,
     modelId,
+    apiUrl,
   })
-  await client.init()
-  return client;
+  await mostAi.init()
+  if (!mostAi.client) {
+    throw new Error('Error in client initialization')
+  }
+  return mostAi.client
 }
-

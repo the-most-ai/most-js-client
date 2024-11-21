@@ -9,6 +9,11 @@
   <link rel="stylesheet" href="/App.css" />
   <link rel="stylesheet" href="/index.css" />
   <script type="module" src="/src/main.ts"></script>
+  <!-- import tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+
 </head>
 
 <body>
@@ -18,11 +23,22 @@
         <img src="/vite.svg" className="logo" alt="Vite logo" />
       </a>
     </div>
-    <h1>Vite with plain HTML</h1>
+    <h1>Playground for MostAI</h1>
+    <p>
+      Modify <code>src/main.tsx</code> to change functionality. This example uses
+    <pre class="text-left mt-2 code bg-black p-4 rounded-md"><code id="code-example"></code></pre>
+    Press button bellow and look to the console
+    </p>
     <div class="card">
-      <button onclick="">Do something!</button>
+      <button class="bg-gray-500 text-white p-2 rounded-md" onclick="doWorkWithMostAi()">Test MostAI!</button>
     </div>
   </div>
+  <script type="module">
+    import mainTsContent from '/src/main.ts?raw'
+    document.getElementById('code-example').textContent = mainTsContent;
+    import { doWorkWithMostAi } from '/src/main.ts'
+    window.doWorkWithMostAi = doWorkWithMostAi
+  </script>
 </body>
 
 </html>

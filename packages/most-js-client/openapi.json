@@ -1,1 +1,902 @@
-{"openapi":"3.1.0","info":{"title":"FastAPI","version":"0.1.0"},"paths":{"/api/content/{path}":{"get":{"summary":"Send Content","operationId":"send_content_api_content__path__get","parameters":[{"name":"path","in":"path","required":true,"schema":{"type":"string","title":"Path"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/ajax_content/{path}":{"post":{"summary":"Send Content","operationId":"send_content_api_ajax_content__path__post","parameters":[{"name":"path","in":"path","required":true,"schema":{"type":"string","title":"Path"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/process/{path}":{"post":{"summary":"Process Content","operationId":"process_content_api_process__path__post","parameters":[{"name":"path","in":"path","required":true,"schema":{"type":"string","title":"Path"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/external/access_token":{"post":{"tags":["external"],"summary":"Get access token","description":"Get access token from clientId and clientSecret","operationId":"auth","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AuthCredentials"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/external/list_models":{"get":{"tags":["external"],"summary":"List trained models for user","description":"List all available trained models","operationId":"list_models","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}}}},"/api/external/{client_id}/upload":{"post":{"tags":["external"],"summary":"Upload an audio","description":"Uploads audio and returns ID","operationId":"upload_audio","parameters":[{"name":"client_id","in":"path","required":true,"schema":{"type":"string","title":"Client Id"}}],"requestBody":{"required":true,"content":{"multipart/form-data":{"schema":{"$ref":"#/components/schemas/Body_upload_audio"}}}},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AudioUpload"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/external/{client_id}/list":{"get":{"tags":["external"],"summary":"List audio files","description":"List all audio files in bucket","operationId":"list_audios","parameters":[{"name":"client_id","in":"path","required":true,"schema":{"type":"string","title":"Client Id"}},{"name":"offset","in":"query","required":false,"schema":{"type":"integer","default":0,"title":"Offset"}},{"name":"limit","in":"query","required":false,"schema":{"type":"integer","default":10,"title":"Limit"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/AudioUpload"},"title":"Response List Audios"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/external/{client_id}/audio/{audio_id}/model/{model_id}/apply":{"post":{"tags":["external"],"summary":"Apply model to audio and get results instantly","description":"Apply model to audio and get results instantly","operationId":"apply","parameters":[{"name":"client_id","in":"path","required":true,"schema":{"type":"string","title":"Client Id"}},{"name":"audio_id","in":"path","required":true,"schema":{"type":"string","title":"Audio Id"}},{"name":"model_id","in":"path","required":true,"schema":{"type":"string","title":"Model Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AudioResult"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/external/{client_id}/audio/{audio_id}/model/{model_id}/apply_async":{"post":{"tags":["external"],"summary":"Apply model to audio and get results later","description":"Apply model to audio and get results later, we can notify you, when results will be available","operationId":"apply_async","parameters":[{"name":"client_id","in":"path","required":true,"schema":{"type":"string","title":"Client Id"}},{"name":"audio_id","in":"path","required":true,"schema":{"type":"string","title":"Audio Id"}},{"name":"model_id","in":"path","required":true,"schema":{"type":"string","title":"Model Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/external/{client_id}/audio/{audio_id}/model/{model_id}/results":{"get":{"tags":["external"],"summary":"Get results of check list of audio from model if available","description":"Get results of check list of audio from model if available","operationId":"fetch_results","parameters":[{"name":"client_id","in":"path","required":true,"schema":{"type":"string","title":"Client Id"}},{"name":"audio_id","in":"path","required":true,"schema":{"type":"string","title":"Audio Id"}},{"name":"model_id","in":"path","required":true,"schema":{"type":"string","title":"Model Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AudioResult"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/external/{client_id}/audio/{audio_id}/model/{model_id}/text":{"get":{"tags":["external"],"summary":"Get transcribed text of audio from Model if available","description":"Get transcribed text of audio from Model if available","operationId":"fetch_text","parameters":[{"name":"client_id","in":"path","required":true,"schema":{"type":"string","title":"Client Id"}},{"name":"audio_id","in":"path","required":true,"schema":{"type":"string","title":"Audio Id"}},{"name":"model_id","in":"path","required":true,"schema":{"type":"string","title":"Model Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AudioResult"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/asyncapi":{"get":{"tags":["asyncapi"],"summary":"Serve Asyncapi Schema","description":"Serve the AsyncAPI schema as an HTML response.","operationId":"serve_asyncapi_schema_asyncapi_get","parameters":[{"name":"sidebar","in":"query","required":false,"schema":{"type":"boolean","default":true,"title":"Sidebar"}},{"name":"info","in":"query","required":false,"schema":{"type":"boolean","default":true,"title":"Info"}},{"name":"servers","in":"query","required":false,"schema":{"type":"boolean","default":true,"title":"Servers"}},{"name":"operations","in":"query","required":false,"schema":{"type":"boolean","default":true,"title":"Operations"}},{"name":"messages","in":"query","required":false,"schema":{"type":"boolean","default":true,"title":"Messages"}},{"name":"schemas","in":"query","required":false,"schema":{"type":"boolean","default":true,"title":"Schemas"}},{"name":"errors","in":"query","required":false,"schema":{"type":"boolean","default":true,"title":"Errors"}},{"name":"expandMessageExamples","in":"query","required":false,"schema":{"type":"boolean","default":true,"title":"Expandmessageexamples"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/asyncapi.json":{"get":{"tags":["asyncapi"],"summary":"Download App Json Schema","operationId":"download_app_json_schema_asyncapi_json_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}}}},"/asyncapi.yaml":{"get":{"tags":["asyncapi"],"summary":"Download App Yaml Schema","operationId":"download_app_yaml_schema_asyncapi_yaml_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}}}}},"components":{"schemas":{"AudioResult":{"properties":{"id":{"type":"string","title":"Id"},"text":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Text"},"url":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Url"},"results":{"anyOf":[{"items":{"$ref":"#/components/schemas/ColumnResult"},"type":"array"},{"type":"null"}],"title":"Results"}},"type":"object","required":["id","text","url","results"],"title":"AudioResult"},"AudioUpload":{"properties":{"id":{"type":"string","title":"Id"},"url":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Url"}},"type":"object","required":["id","url"],"title":"AudioUpload"},"AuthCredentials":{"properties":{"client_id":{"type":"string","title":"Client Id"},"client_secret":{"type":"string","title":"Client Secret"}},"type":"object","required":["client_id","client_secret"],"title":"AuthCredentials"},"Body_upload_audio":{"properties":{"audio_file":{"type":"string","format":"binary","title":"Audio File"}},"type":"object","required":["audio_file"],"title":"Body_upload_audio"},"ColumnResult":{"properties":{"name":{"type":"string","title":"Name"},"subcolumns":{"items":{"$ref":"#/components/schemas/SubcolumnResult"},"type":"array","title":"Subcolumns"}},"type":"object","required":["name","subcolumns"],"title":"ColumnResult"},"HTTPValidationError":{"properties":{"detail":{"items":{"$ref":"#/components/schemas/ValidationError"},"type":"array","title":"Detail"}},"type":"object","title":"HTTPValidationError"},"SubcolumnResult":{"properties":{"name":{"type":"string","title":"Name"},"score":{"anyOf":[{"type":"integer"},{"type":"null"}],"title":"Score"},"description":{"type":"string","title":"Description"}},"type":"object","required":["name","score","description"],"title":"SubcolumnResult"},"ValidationError":{"properties":{"loc":{"items":{"anyOf":[{"type":"string"},{"type":"integer"}]},"type":"array","title":"Location"},"msg":{"type":"string","title":"Message"},"type":{"type":"string","title":"Error Type"}},"type":"object","required":["loc","msg","type"],"title":"ValidationError"}}}}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "FastAPI",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/content/{path}": {
+      "get": {
+        "summary": "Send Content",
+        "operationId": "send_content_api_content__path__get",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Path"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ajax_content/{path}": {
+      "post": {
+        "summary": "Send Content",
+        "operationId": "send_content_api_ajax_content__path__post",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Path"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/process/{path}": {
+      "post": {
+        "summary": "Process Content",
+        "operationId": "process_content_api_process__path__post",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Path"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/external/access_token": {
+      "post": {
+        "tags": [
+          "external"
+        ],
+        "summary": "Get access token",
+        "description": "Get access token from clientId and clientSecret",
+        "operationId": "auth",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthCredentials"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/external/list_models": {
+      "get": {
+        "tags": [
+          "external"
+        ],
+        "summary": "List trained models for user",
+        "description": "List all available trained models",
+        "operationId": "list_models",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/external/{client_id}/upload": {
+      "post": {
+        "tags": [
+          "external"
+        ],
+        "summary": "Upload an audio",
+        "description": "Uploads audio and returns ID",
+        "operationId": "upload_audio",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Client Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_audio"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudioUpload"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/external/{client_id}/list": {
+      "get": {
+        "tags": [
+          "external"
+        ],
+        "summary": "List audio files",
+        "description": "List all audio files in bucket",
+        "operationId": "list_audios",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Client Id"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AudioUpload"
+                  },
+                  "title": "Response List Audios"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/external/{client_id}/audio/{audio_id}/model/{model_id}/apply": {
+      "post": {
+        "tags": [
+          "external"
+        ],
+        "summary": "Apply model to audio and get results instantly",
+        "description": "Apply model to audio and get results instantly",
+        "operationId": "apply",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Client Id"
+            }
+          },
+          {
+            "name": "audio_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Audio Id"
+            }
+          },
+          {
+            "name": "model_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Model Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudioResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/external/{client_id}/audio/{audio_id}/model/{model_id}/apply_async": {
+      "post": {
+        "tags": [
+          "external"
+        ],
+        "summary": "Apply model to audio and get results later",
+        "description": "Apply model to audio and get results later, we can notify you, when results will be available",
+        "operationId": "apply_async",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Client Id"
+            }
+          },
+          {
+            "name": "audio_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Audio Id"
+            }
+          },
+          {
+            "name": "model_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Model Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/external/{client_id}/audio/{audio_id}/model/{model_id}/results": {
+      "get": {
+        "tags": [
+          "external"
+        ],
+        "summary": "Get results of check list of audio from model if available",
+        "description": "Get results of check list of audio from model if available",
+        "operationId": "fetch_results",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Client Id"
+            }
+          },
+          {
+            "name": "audio_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Audio Id"
+            }
+          },
+          {
+            "name": "model_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Model Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudioResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/external/{client_id}/audio/{audio_id}/model/{model_id}/text": {
+      "get": {
+        "tags": [
+          "external"
+        ],
+        "summary": "Get transcribed text of audio from Model if available",
+        "description": "Get transcribed text of audio from Model if available",
+        "operationId": "fetch_text",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Client Id"
+            }
+          },
+          {
+            "name": "audio_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Audio Id"
+            }
+          },
+          {
+            "name": "model_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Model Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudioResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/asyncapi": {
+      "get": {
+        "tags": [
+          "asyncapi"
+        ],
+        "summary": "Serve Asyncapi Schema",
+        "description": "Serve the AsyncAPI schema as an HTML response.",
+        "operationId": "serve_asyncapi_schema_asyncapi_get",
+        "parameters": [
+          {
+            "name": "sidebar",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Sidebar"
+            }
+          },
+          {
+            "name": "info",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Info"
+            }
+          },
+          {
+            "name": "servers",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Servers"
+            }
+          },
+          {
+            "name": "operations",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Operations"
+            }
+          },
+          {
+            "name": "messages",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Messages"
+            }
+          },
+          {
+            "name": "schemas",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Schemas"
+            }
+          },
+          {
+            "name": "errors",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Errors"
+            }
+          },
+          {
+            "name": "expandMessageExamples",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Expandmessageexamples"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/asyncapi.json": {
+      "get": {
+        "tags": [
+          "asyncapi"
+        ],
+        "summary": "Download App Json Schema",
+        "operationId": "download_app_json_schema_asyncapi_json_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/asyncapi.yaml": {
+      "get": {
+        "tags": [
+          "asyncapi"
+        ],
+        "summary": "Download App Yaml Schema",
+        "operationId": "download_app_yaml_schema_asyncapi_yaml_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AudioResult": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ColumnResult"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "text",
+          "url",
+          "results"
+        ],
+        "title": "AudioResult"
+      },
+      "AudioUpload": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "url"
+        ],
+        "title": "AudioUpload"
+      },
+      "AuthCredentials": {
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "type": "string",
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "required": [
+          "client_id",
+          "client_secret"
+        ],
+        "title": "AuthCredentials"
+      },
+      "Body_upload_audio": {
+        "properties": {
+          "audio_file": {
+            "type": "string",
+            "format": "binary",
+            "title": "Audio File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "audio_file"
+        ],
+        "title": "Body_upload_audio"
+      },
+      "ColumnResult": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "subcolumns": {
+            "items": {
+              "$ref": "#/components/schemas/SubcolumnResult"
+            },
+            "type": "array",
+            "title": "Subcolumns"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "subcolumns"
+        ],
+        "title": "ColumnResult"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "SubcolumnResult": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "score",
+          "description"
+        ],
+        "title": "SubcolumnResult"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
