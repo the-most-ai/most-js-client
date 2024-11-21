@@ -30,14 +30,15 @@
     Press button bellow and look to the console
     </p>
     <div class="card">
-      <button class="bg-gray-500 text-white p-2 rounded-md" onclick="doWorkWithMostAi()">Test MostAI!</button>
+      <button class="bg-gray-500 text-white p-2 rounded-md" onclick="test()">Test MostAI!</button>
+      <input type="file" id="file-input" accept="audio/*" />
     </div>
   </div>
   <script type="module">
     import mainTsContent from '/src/main.ts?raw'
     document.getElementById('code-example').textContent = mainTsContent;
     import { doWorkWithMostAi } from '/src/main.ts'
-    window.doWorkWithMostAi = doWorkWithMostAi
+    window.test = () => doWorkWithMostAi(document.getElementById('file-input').files[0])
   </script>
 </body>
 

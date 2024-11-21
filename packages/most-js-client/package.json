@@ -1,6 +1,6 @@
 {
   "name": "most-js-client",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -10,7 +10,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc",
     "generate-runtime": "bunx openapicmd read --strip openapi_client_axios --format json openapi.json > src/openapi-runtime.json",
-    "generate-types": "bunx openapicmd typegen ./openapi.json > src/openapi.ts",
+    "generate-types": "bunx openapicmd typegen ./openapi.json > src/backendTypes.ts",
     "dev": "tsc --watch"
   },
   "dependencies": {
