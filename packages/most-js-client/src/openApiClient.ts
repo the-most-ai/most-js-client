@@ -1,21 +1,28 @@
-import OpenAPIClientAxios from 'openapi-client-axios'
+import OpenAPIClientAxios, { OperationResponse } from 'openapi-client-axios'
 import openapiRuntime from './openapi-runtime.json'
-import { Client } from './backendTypes'
+import { AudioResult, Client, AudioUpload } from './backendTypes'
 
 const BASE_URL = 'https://api.the-most.ai'
 
 export interface MostAiClientOptions {
+  clientId: string
+  clientSecret: string
   modelId?: string
   apiUrl?: string
 }
 
 class OpenApiClient {
+  private clientId: string
+  private clientSecret: string
+
   private apiUrl?: string
 
   public client: Client
 
   constructor(options: MostAiClientOptions) {
     this.apiUrl = options.apiUrl || BASE_URL
+    this.clientId = options.clientId
+    this.clientSecret = options.clientSecret
 
     this.client = new OpenAPIClientAxios({
       definition: openapiRuntime,
@@ -25,10 +32,10 @@ class OpenApiClient {
     }).initSync<Client>()
   }
 
-  async authenticate(clientId: string, clientSecret: string) {
+  async authenticate() {
     const { data: accessToken } = await this.client.auth(
       {},
-      { client_id: clientId, client_secret: clientSecret },
+      { client_id: this.clientId, client_secret: this.clientSecret },
     )
     this.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
 
@@ -38,62 +45,89 @@ class OpenApiClient {
 
 export class MostClient {
   private openApiClient: OpenApiClient
+  private clientId: string
+  private modelId?: string
 
   constructor(options: MostAiClientOptions) {
     this.openApiClient = new OpenApiClient(options)
+    this.clientId = options.clientId
   }
 
-  async authenticate(clientId: string, clientSecret: string) {
-    await this.openApiClient.authenticate(clientId, clientSecret)
+  async authenticate() {
+    await this.openApiClient.authenticate()
   }
 
-  listModels() {
-    return this.openApiClient.client.list_models()
+  async listModels(): Promise<Array<{model: string}>> {
+    const resp = await this.openApiClient.client.list_models()
+    return resp.data
   }
 
-  uploadAudio(clientId: string, audioFile: File) {
+  useModel(modelId: string) {
+    this.modelId = modelId
+  }
+
+  async uploadAudio(audioFile: File): Promise<AudioUpload> {
     const formData = new FormData()
     formData.append('audio_file', audioFile)
-    return this.openApiClient.client.upload_audio(clientId, formData)
+    // @ts-ignore
+    const resp = await this.openApiClient.client.upload_audio(this.clientId, formData)
+    return resp.data
   }
 
-  listAudios(clientId: string, offset = 0, limit = 10) {
-    return this.openApiClient.client.list_audios({
-      client_id: clientId,
+  async listAudios(offset = 0, limit = 10): Promise<AudioUpload[]> {
+    const resp = await this.openApiClient.client.list_audios({
+      client_id: this.clientId,
       offset,
       limit,
     })
+    return resp.data
   }
 
-  applyModel(clientId: string, audioId: string, modelId: string) {
-    return this.openApiClient.client.apply({
-      client_id: clientId,
+  async applyModel(audioId: string): Promise<AudioResult> {
+    if (!this.modelId) {
+      throw new Error('No model id provided')
+    }
+    const resp = await this.openApiClient.client.apply({
+      client_id: this.clientId,
       audio_id: audioId,
-      model_id: modelId,
+      model_id: this.modelId,
     })
+    return resp.data
   }
 
-  applyModelAsync(clientId: string, audioId: string, modelId: string) {
-    return this.openApiClient.client.apply_async({
-      client_id: clientId,
+  async applyModelAsync(audioId: string) {
+    throw new Error('Not implemented yet')
+    /*
+    const resp = await this.openApiClient.client.apply_async({
+      client_id: this.clientId,
       audio_id: audioId,
-      model_id: modelId,
+      model_id: this.modelId,
     })
+    return resp.data
+     */
   }
 
-  fetchResults(clientId: string, audioId: string, modelId: string) {
-    return this.openApiClient.client.fetch_results({
-      client_id: clientId,
+  async fetchResults(audioId: string): Promise<AudioResult> {
+    if (!this.modelId) {
+      throw new Error('No model id provided')
+    }
+    const resp = await this.openApiClient.client.fetch_results({
+      client_id: this.clientId,
       audio_id: audioId,
-      model_id: modelId,
+      model_id: this.modelId,
     })
+    return resp.data
   }
 
-  fetchText(clientId: string, audioId: string, modelId: string) {
-    return this.openApiClient.client.fetch_text({
-      client_id: clientId,
+  async fetchText(audioId: string): Promise<AudioResult> {
+    if (!this.modelId) {
+      throw new Error('No model id provided')
+    }
+    const resp = await this.openApiClient.client.fetch_text({
+      client_id: this.clientId,
       audio_id: audioId,
-      model_id: modelId,
+      model_id: this.modelId,
     })
+    return resp.data
   }
 }

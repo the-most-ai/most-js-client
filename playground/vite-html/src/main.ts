@@ -9,13 +9,12 @@ console.log('client', client)
 
 export async function doWorkWithMostAi(file: File) {
   const models = await client.listModels()
-  console.log(`Models fetched:`, models.data)
-  const audioUpload = await client.uploadAudio('67239029570a08554fc1f5a6', file)
-  console.log(`Audio uploaded`, audioUpload.data)
+  console.log(`Models fetched:`, models)
+  client.useModel(models[0].model)
+  const audioUpload = await client.uploadAudio(file)
+  console.log(`Audio uploaded`, audioUpload)
   const applyModel = await client.applyModel(
-    '67239029570a08554fc1f5a6',
-    audioUpload.data.id,
-    models.data[0].model,
+    audioUpload.id,
   )
-  console.log(`Model applied`, applyModel.data)
+  console.log(`Model applied`, applyModel)
 }

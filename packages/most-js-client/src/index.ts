@@ -9,7 +9,10 @@ export const createMostApiClient = async ({
   clientId,
   clientSecret,
 }: CreateMostAIClientOptions) => {
-  const client = new MostClient({})
-  await client.authenticate(clientId, clientSecret)
+  const client = new MostClient({
+    clientId: clientId,
+    clientSecret: clientSecret
+  })
+  await client.authenticate()
   return client
 }
